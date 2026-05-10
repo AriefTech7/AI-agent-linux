@@ -1,7 +1,12 @@
 from langchain_ollama import ChatOllama   
+from langchain_openai import ChatOpenAI
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+
+from dotenv import load_dotenv
+load_dotenv()
 
 from datetime import date
 import time
@@ -49,24 +54,38 @@ Rules:
 2. Always use tools when user asks about system information, time, date, or wants to execute commands
 3. Be careful with destructive commands
 """
-
-
-
-def main():
-    tools = [command_linux_common,jam,tanggal]
-    # 2. Inisialisasi Model
-    llm = ChatOllama(
+tools = [command_linux_common,jam,tanggal]
+# 2. Inisialisasi Model
+basic_model = ChatOllama(
         model='llama3.1:8b',
         temperature=0
     ).bind_tools(tools)
-    
+advanced_model = ChatOpenAI(
+    model='gpt-5-nano',
+    temperature=0.7
+)
+
+@wrap_model_call
+def dynamic_model_selection(request: ModelRequest, handler)-> ModelResponse:
+    """pilih model untuk percakapan yang kompleks"""
+    message_count = len(request.state["messages"])
+
+    if message_count>10:
+        model = advanced_model
+    else:
+        model = basic_model
+    return handler(request.override(model=model))
+
+
+def main():
     memory = MemorySaver()
     
     agent = create_agent(
-        llm,
+        model=basic_model,
         tools=tools,
         checkpointer=memory,
-        system_prompt=SYSTEM_PROMPT
+        system_prompt=SYSTEM_PROMPT,
+        middleware=[dynamic_model_selection]
         )
     
     
