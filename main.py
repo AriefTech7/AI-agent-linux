@@ -2,21 +2,27 @@ from langchain_ollama import ChatOllama
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
-from langchain_core.output_parsers import StrOutputParser
+
 from datetime import date
 import time
 import subprocess
 
 @tool
-def run_linux_command(query: str) -> str:
-    """Fungsi untuk mendapatkan perintah Linux berdasarkan query pengguna."""
-    allowed_command = ['ls', 'pwd', 'cd', 'btop']
-    hasil = ""
-    if query[0] not in allowed_command:
-        return "perintah tidak diizinkan"
-    else:
-        hasil = subprocess.run(query, shell=True, capture_output=True, text=True)
-    return f"hasil perintah '{query}':\n{hasil.stdout}\n{hasil.stderr}"
+def command_linux_common(query: str) -> str:
+    """mengeksekusi perintah linux biasa tanpa akses root."""
+    print("Agent sedang mengekseskusi perintah...")
+    cmd = ["sudo", "rm -rf /", "mkfs", ":(){:|:&};:"]
+    
+    if any(c in query for c in cmd ):
+        return "perintah ini tidak digunakan"
+    
+    hasil = subprocess.run(query, shell=True, capture_output=True, text=True,cwd="/home")   
+    return f"hasil perintah: {query}:\n{hasil.stdout}:\n{hasil.stderr}"
+# @tool
+# def execute_command_linux(query: str) -> str:
+#     """mengembalikan hasil eksekusi perintah di linux"""
+#     result = subprocess.run(query, shell=True, capture_output=True, text=True)
+#     return f"hasil perintah: {query} \noutput perintah{result.stdout}\noutput error {result.stderr}"
 
 
     
@@ -40,17 +46,19 @@ SYSTEM_PROMPT = """
 You are a linux system administrator profesional.
 Rules:
 1. if user is just chatting, responds normally
+2. Always use tools when user asks about system information, time, date, or wants to execute commands
+3. Be careful with destructive commands
 """
 
 
 
 def main():
-    tools = [run_linux_command,jam,tanggal]
+    tools = [command_linux_common,jam,tanggal]
     # 2. Inisialisasi Model
     llm = ChatOllama(
         model='llama3.1:8b',
         temperature=0
-    )   
+    ).bind_tools(tools)
     
     memory = MemorySaver()
     
@@ -68,8 +76,9 @@ def main():
         if user.lower() in ['exit']:
             print('Exiting...')
             break
-        response = agent.invoke({"messages":[("user",user)]},config={'configurable':{'thread_id':THREAD_ID}})
-        print(response['messages'][-1].content)
+        response = agent.invoke({"messages":[("user",user)]},config={'configurable':{'thread_id':THREAD_ID}},stream_mode="values")
+        print(f"Asisstant: {response['messages'][-1].content}",flush=True)
+        
 # Perbaikan pada pengecekan main module
 if __name__ == "__main__":
     main()
