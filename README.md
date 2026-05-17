@@ -1,4 +1,4 @@
-# Dokumentasi Proyek: AI-agent-linux
+# AI-agent-linux
 
 ## 📋 Gambaran Umum
 
