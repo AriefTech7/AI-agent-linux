@@ -11,11 +11,12 @@ load_dotenv()
 from datetime import date
 import time
 import subprocess
+from system_prompt import SYSTEM_PROMPT
 
 @tool
 def command_linux_common(query: str) -> str:
     """mengeksekusi perintah linux biasa tanpa akses root."""
-    print("Agent sedang mengekseskusi perintah...")
+    # print("Agent sedang mengekseskusi perintah linux...")
     cmd = ["sudo", "rm -rf /", "mkfs", ":(){:|:&};:"]
     
     if any(c in query for c in cmd ):
@@ -47,13 +48,7 @@ def tanggal()-> str:
 
 
 THREAD_ID = 'user-id-1'
-SYSTEM_PROMPT = """
-You are a linux system administrator profesional.
-Rules:
-1. if user is just chatting, responds normally
-2. Always use tools when user asks about system information, time, date, or wants to execute commands
-3. Be careful with destructive commands
-"""
+
 tools = [command_linux_common,jam,tanggal]
 # 2. Inisialisasi Model
 basic_model = ChatOllama(
@@ -65,6 +60,7 @@ advanced_model = ChatOpenAI(
     temperature=0.7
 )
 
+# function ini berfungsi memilih salah satu model yang akan digunakan berdasarkan panjang percakapan 
 @wrap_model_call
 def dynamic_model_selection(request: ModelRequest, handler)-> ModelResponse:
     """pilih model untuk percakapan yang kompleks"""
@@ -86,6 +82,7 @@ def main():
         checkpointer=memory,
         system_prompt=SYSTEM_PROMPT,
         middleware=[dynamic_model_selection]
+        # name="alexi"
         )
     
     
