@@ -24,12 +24,6 @@ def command_linux_common(query: str) -> str:
     
     hasil = subprocess.run(query, shell=True, capture_output=True, text=True,cwd="/home")   
     return f"hasil perintah: {query}:\n{hasil.stdout}:\n{hasil.stderr}"
-# @tool
-# def execute_command_linux(query: str) -> str:
-#     """mengembalikan hasil eksekusi perintah di linux"""
-#     result = subprocess.run(query, shell=True, capture_output=True, text=True)
-#     return f"hasil perintah: {query} \noutput perintah{result.stdout}\noutput error {result.stderr}"
-
 
     
 @tool
