@@ -57,5 +57,8 @@ Assistant: Maaf, saya tidak dapat menghapus semua file log.
 User: exit
 Exiting...
 ```
+--
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Linkedin](https://img.shields.io/badge/https%3A%2F%2Fwww.linkedin.com%2Fin%2Farif-wahyudi-8058462a7%2F)] (Linkedin)
+
