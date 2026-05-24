@@ -57,8 +57,21 @@ Assistant: Maaf, saya tidak dapat menghapus semua file log.
 User: exit
 Exiting...
 ```
---
+---
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Linkedin](https://img.shields.io/badge/https%3A%2F%2Fwww.linkedin.com%2Fin%2Farif-wahyudi-8058462a7%2F)] (Linkedin)
+
+<div align="center">
+
+### 🔗 Connect with Me
+
+<a href="https://www.linkedin.com/in/arif-wahyudi-8058462a7/">
+  <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white" height="30">
+</a>
+<a href="https://www.instagram.com/arf_wahyudi/">
+  <img src="https://img.shields.io/badge/Instagram-0A66C2?style=flat&logo=instagram&logoColor=red" height="30">
+</a>
+
+
+</div>
 
