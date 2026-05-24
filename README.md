@@ -57,3 +57,5 @@ Assistant: Maaf, saya tidak dapat menghapus semua file log.
 User: exit
 Exiting...
 ```
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
