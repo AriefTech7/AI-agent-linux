@@ -1,5 +1,4 @@
-from langchain_ollama import ChatOllama   
-from langchain_openai import ChatOpenAI
+from llm import qwen, chatgpt
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
@@ -44,15 +43,6 @@ def tanggal()-> str:
 THREAD_ID = 'user-id-1'
 
 tools = [command_linux_common,jam,tanggal]
-# 2. Inisialisasi Model
-basic_model = ChatOllama(
-        model='llama3.1:8b',
-        temperature=0
-    ).bind_tools(tools)
-advanced_model = ChatOpenAI(
-    model='gpt-5-nano',
-    temperature=0.7
-)
 
 # function ini berfungsi memilih salah satu model yang akan digunakan berdasarkan panjang percakapan 
 @wrap_model_call
@@ -61,9 +51,11 @@ def dynamic_model_selection(request: ModelRequest, handler)-> ModelResponse:
     message_count = len(request.state["messages"])
 
     if message_count>10:
-        model = advanced_model
+        model = chatgpt.llm
+        print("Model yang digunakan: ChatGPT")
     else:
-        model = basic_model
+        model = qwen.llm.bind_tools(tools)
+        print("Model yang digunakan: Qwen")
     return handler(request.override(model=model))
 
 
@@ -71,12 +63,12 @@ def main():
     memory = MemorySaver()
     
     agent = create_agent(
-        model=basic_model,
+        model=qwen.llm,
         tools=tools,
         checkpointer=memory,
         system_prompt=SYSTEM_PROMPT,
-        middleware=[dynamic_model_selection]
-        # name="alexi"
+        middleware=[dynamic_model_selection],
+        name="alexi"
         )
     
     
