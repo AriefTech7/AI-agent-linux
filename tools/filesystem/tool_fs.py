@@ -1,6 +1,6 @@
 from langchain_core.tools import tool
 
-from service import FileService
+from .service import FileService
 
 file_service = FileService()
 

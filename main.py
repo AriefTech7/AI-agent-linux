@@ -1,4 +1,19 @@
 from llm import qwen, chatgpt
+from tools.filesystem.tool_fs import (
+    filesystem_read_file,
+    filesystem_delete_file,
+    filesystem_move_file,
+    filesystem_copy_file,
+    filesystem_rename_file,
+    filesystem_create_file,
+    filesystem_find_file,
+    filesystem_create_folder,
+    filesystem_read_folder,
+    filesystem_get_folder_size,
+)
+# from tools.filesystem.service import FileService
+# from tools.web_search.tool_basic import *
+# from tools.web_search.tool_advanced import *
 from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
@@ -12,17 +27,17 @@ import time
 import subprocess
 from system_prompt import SYSTEM_PROMPT
 
-@tool
-def command_linux_common(query: str) -> str:
-    """mengeksekusi perintah linux biasa tanpa akses root."""
-    # print("Agent sedang mengekseskusi perintah linux...")
-    cmd = ["sudo", "rm -rf /", "mkfs", ":(){:|:&};:"]
+# @tool
+# def command_linux_common(query: str) -> str:
+#     """mengeksekusi perintah linux biasa tanpa akses root."""
+#     # print("Agent sedang mengekseskusi perintah linux...")
+#     cmd = ["sudo", "rm -rf /", "mkfs", ":(){:|:&};:"]
     
-    if any(c in query for c in cmd ):
-        return "perintah ini tidak digunakan"
+#     if any(c in query for c in cmd ):
+#         return "perintah ini tidak digunakan"
     
-    hasil = subprocess.run(query, shell=True, capture_output=True, text=True,cwd="/home")   
-    return f"hasil perintah: {query}:\n{hasil.stdout}:\n{hasil.stderr}"
+#     hasil = subprocess.run(query, shell=True, capture_output=True, text=True,cwd="/home")   
+#     return f"hasil perintah: {query}:\n{hasil.stdout}:\n{hasil.stderr}"
 
     
 @tool
@@ -42,7 +57,9 @@ def tanggal()-> str:
 
 THREAD_ID = 'user-id-1'
 
-tools = [command_linux_common,jam,tanggal]
+tools = [
+    jam,tanggal,filesystem_read_file,filesystem_delete_file,filesystem_move_file,filesystem_copy_file,filesystem_rename_file,
+    filesystem_create_file,filesystem_find_file,filesystem_create_folder,filesystem_read_folder,filesystem_get_folder_size]
 
 # function ini berfungsi memilih salah satu model yang akan digunakan berdasarkan panjang percakapan 
 @wrap_model_call

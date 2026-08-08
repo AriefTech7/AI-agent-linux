@@ -2,10 +2,31 @@ from pathlib import Path
 
 
 class FileService:
+    def __init__(self):
+        # Kunci semua operasi ke direktori utama (root proyek)
+        self.base_dir = Path("/home/aiAgent").resolve().parent.parent.parent
+        
+    def _get_secure_path(self, user_path: str) -> Path:
+        """
+        Fungsi internal pembantu (helper) untuk mengamankan path.
+        Menggabungkan path dari user dengan base_dir, lalu memastikan
+        hasil akhirnya tidak keluar dari folder proyek.
+        """
+        # Hapus awalan '/' atau '\' agar tidak dianggap sebagai path absolut root sistem linux/windows
+        clean_path = str(user_path).lstrip("/\\")
+        
+        # Resolve akan mengeksekusi '../' dan menghasilkan path absolut asli
+        target_path = (self.base_dir / clean_path).resolve()
 
+        # VALIDASI KEAMANAN: Pastikan path tujuan diawali dengan path proyek kita
+        if not str(target_path).startswith(str(self.base_dir)):
+            raise PermissionError(f"Security Alert: Akses ditolak! Path '{user_path}' berada di luar direktori proyek.")
+            
+        return target_path
+    
     def read_file(self, path: str):
         # hanya untuk membaca file
-        file = Path(path)
+        file = self._get_secure_path(path)
 
         if not file.is_file():
             raise FileNotFoundError(path)
@@ -14,10 +35,12 @@ class FileService:
 
     def delete_file(self, path: str) -> dict:
         # hanya untuk menghapus file
-        file = Path(path)
+        file = self._get_secure_path(path)
 
         if not file.is_file():
             raise FileNotFoundError(path)
+        
+        file.unlink()
 
         return {
             "success": True,
@@ -26,8 +49,8 @@ class FileService:
 
     def move_file(self, pathNow: str, pathTo: str) -> dict:
         # hanya untuk memindahkan file
-        file_now = Path(pathNow)
-        file_to = Path(pathTo)
+        file_now = self._get_secure_path(pathNow)
+        file_to = self._get_secure_path(pathTo)
 
         if not file_now.is_file():
             raise FileNotFoundError(pathNow)
@@ -43,8 +66,8 @@ class FileService:
 
     def copy_file(self, source: str, destination: str) -> dict:
         # hanya untuk mencopy file
-        src = Path(source)
-        dst = Path(destination)
+        src = self._get_secure_path(source)
+        dst = self._get_secure_path(destination)
 
         if not src.is_file():
             raise FileNotFoundError(source)
@@ -61,7 +84,7 @@ class FileService:
 
     def rename_file(self, path: str, new_name_file:str):
         # hanya untuk mengubah nama file
-        old_file = Path(path)
+        old_file = self._get_secure_path(path)
 
         if not old_file.is_file():
             raise FileNotFoundError(path)
@@ -77,7 +100,7 @@ class FileService:
 
     def create_file(self, path: str, filename: str) -> dict:
         # hanya untuk membuat file baru
-        file = Path(path) / filename
+        file = self._get_secure_path(path) / filename
         file.parent.mkdir(parents=True, exist_ok=True)
 
         file.touch(exist_ok=False)
@@ -89,7 +112,7 @@ class FileService:
 
     def find_file(self, path: str, filename: str) -> list[str]:
         # hanya untuk menemukan file
-        folder = Path(path)
+        folder = self._get_secure_path(path)
 
         if not folder.is_dir():
             raise NotADirectoryError(
@@ -103,7 +126,7 @@ class FileService:
 
     def create_folder(self, path: str, nameFolder: str) -> dict:
         # hanya untuk membuat folder baru
-        folder_baru = Path(path) / nameFolder
+        folder_baru = self._get_secure_path(path) / nameFolder
 
         folder_baru.mkdir(exist_ok=True)
 
@@ -114,7 +137,7 @@ class FileService:
 
     def read_folder(self, path: str) -> list[dict]:
         # hanya untuk melihat isi folder
-        folder = Path(path)
+        folder = self._get_secure_path(path)
 
         if not folder.is_dir():
             raise NotADirectoryError(path)
@@ -130,7 +153,7 @@ class FileService:
 
     def check_size_folder(self, path: str) -> dict:
         # hanya untuk cek size folder
-        folder = Path(path)
+        folder = self._get_secure_path(path)
 
         if not folder.is_dir():
             raise NotADirectoryError(path)
@@ -146,3 +169,5 @@ class FileService:
             "mb": round(total_size / (1024**2), 2),
             "gb": round(total_size / (1024**3), 2)
         }
+    
+    # def write_file_service(self):
