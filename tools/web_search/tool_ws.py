@@ -5,7 +5,7 @@ search_tool = WebSearchTool()
 
 
 @tool
-def web_search_basic(query: str) -> dict:
+def web_search_basic(query: str) -> dict[str, any]:
     """
     Search the web quickly and efficiently.
 
@@ -26,7 +26,7 @@ def web_search_basic(query: str) -> dict:
 
 
 @tool
-def web_search_advanced(query: str) -> dict:
+def web_search_advanced(query: str) -> dict[str, any]:
     """
     Search the web with advanced mode for more in-depth research.
 
@@ -45,24 +45,24 @@ def web_search_advanced(query: str) -> dict:
     return search_tool.search_advanced(query)
 
 
-@tool
-def web_search_fast(query: str) -> dict:
-    """
-    Performs a rapid web search to meet immediate information needs.
+# @tool
+# def web_search_fast(query: str) -> dict[str, any]:
+#     """
+#     Performs a rapid web search to meet immediate information needs.
 
-    Use this tool when the user requires quick answers, brief facts,
-    simple validation, news headlines, entity names, short definitions, or
-    information likely to be available directly in the top search results.
+#     Use this tool when the user requires quick answers, brief facts,
+#     simple validation, news headlines, entity names, short definitions, or
+#     information likely to be available directly in the top search results.
 
-    This mode prioritizes speed and token efficiency, making it unsuitable
-    for in-depth research, complex analysis, multi-source comparisons, or
-    queries requiring further verification.
+#     This mode prioritizes speed and token efficiency, making it unsuitable
+#     for in-depth research, complex analysis, multi-source comparisons, or
+#     queries requiring further verification.
 
-    Args:
-    query: The question or keywords for the quick search.
+#     Args:
+#     query: The question or keywords for the quick search.
 
-    Returns:
-    dict: Quick search results containing top web sources.
-    """
+#     Returns:
+#     dict: Quick search results containing top web sources.
+#     """
 
-    return search_tool.search_fast(query)
+#     return search_tool.search_fast(query)
