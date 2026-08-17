@@ -1,11 +1,11 @@
 from langchain.tools import tool
 from .service import WebSearchTool
-
+from typing import Any,Dict
 search_tool = WebSearchTool()
 
 
 @tool
-def web_search_basic(query: str) -> dict[str, any]:
+def web_search_basic(query: str) -> Dict[str, Any]:
     """
     Search the web quickly and efficiently.
 
@@ -19,14 +19,14 @@ def web_search_basic(query: str) -> dict[str, any]:
     query: The question or keywords to search for.
 
     Returns:
-    dict: Search results containing a summary and a list of web sources.
+    Dict: Search results containing a summary and a list of web sources.
     """
 
     return search_tool.search_basic(query)
 
 
 @tool
-def web_search_advanced(query: str) -> dict[str, any]:
+def web_search_advanced(query: str) -> Dict[str, Any]:
     """
     Search the web with advanced mode for more in-depth research.
 
@@ -40,13 +40,13 @@ def web_search_advanced(query: str) -> dict[str, any]:
     query: The question or keyword you want to search for in depth.
 
     Returns:
-    dict: Advanced search results containing a summary and a list of web sources.
+    Dict: Advanced search results containing a summary and a list of web sources.
     """
     return search_tool.search_advanced(query)
 
 
 # @tool
-# def web_search_fast(query: str) -> dict[str, any]:
+# def web_search_fast(query: str) -> Dict[str, Any]:
 #     """
 #     Performs a rapid web search to meet immediate information needs.
 
@@ -62,7 +62,7 @@ def web_search_advanced(query: str) -> dict[str, any]:
 #     query: The question or keywords for the quick search.
 
 #     Returns:
-#     dict: Quick search results containing top web sources.
+#     Dict: Quick search results containing top web sources.
 #     """
 
 #     return search_tool.search_fast(query)

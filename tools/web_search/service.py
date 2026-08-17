@@ -1,5 +1,5 @@
 import os
-
+from typing import Any,Dict
 from tavily import TavilyClient
 from dotenv import load_dotenv
 load_dotenv()
@@ -8,7 +8,7 @@ class WebSearchTool:
     def __init__(self):
         self.client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
         
-    def __clean_response(self, response: dict[str, any]) -> dict[str, any]:
+    def __clean_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
         # Membersihkan respons dari karakter tidak diinginkan
         results = response.get("results", [])
         clean_result = []
@@ -26,7 +26,7 @@ class WebSearchTool:
             "results": clean_result
         }
 
-    def search_basic(self,query: str) -> dict[str, any]:
+    def search_basic(self,query: str) -> Dict[str, Any]:
         # melakukan pencarian basic menggunakan Tavily
         result_basic = self.client.search(
             query=query,
@@ -39,7 +39,7 @@ class WebSearchTool:
         
         return self.__clean_response(result_basic)
     
-    def search_advanced(self,query: str) -> dict[str, any]:
+    def search_advanced(self,query: str) -> Dict[str, Any]:
         # melakukan pencarian advanced menggunakan Tavily
         result_advanced = self.client.search(
             query=query,
@@ -51,7 +51,7 @@ class WebSearchTool:
         )
         return self.__clean_response(result_advanced)
     
-    def search_fast(self,query: str) -> dict[str, any]:
+    def search_fast(self,query: str) -> Dict[str, Any]:
         # melakukan pencarian fast menggunakan Tavily
         result_fast = self.client.search(
             query=query,
