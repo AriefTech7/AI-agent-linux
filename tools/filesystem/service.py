@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Dict,List
 
 
 class FileService:
@@ -24,7 +25,7 @@ class FileService:
             
         return target_path
     
-    def read_file(self, path: str):
+    def read_file(self, path: str)->str:
         # hanya untuk membaca file
         file = self._get_secure_path(path)
 
@@ -33,7 +34,7 @@ class FileService:
 
         return file.read_text(encoding="utf-8")
 
-    def delete_file(self, path: str) -> dict:
+    def delete_file(self, path: str) -> Dict:
         # hanya untuk menghapus file
         file = self._get_secure_path(path)
 
@@ -47,7 +48,7 @@ class FileService:
             "deleted": str(file)
         }
 
-    def move_file(self, pathNow: str, pathTo: str) -> dict:
+    def move_file(self, pathNow: str, pathTo: str) -> Dict:
         # hanya untuk memindahkan file
         file_now = self._get_secure_path(pathNow)
         file_to = self._get_secure_path(pathTo)
@@ -64,7 +65,7 @@ class FileService:
             "source": str(file_now)
         }
 
-    def copy_file(self, source: str, destination: str) -> dict:
+    def copy_file(self, source: str, destination: str) -> Dict:
         # hanya untuk mencopy file
         src = self._get_secure_path(source)
         dst = self._get_secure_path(destination)
@@ -82,7 +83,7 @@ class FileService:
             "destination": str(copied)
         }
 
-    def rename_file(self, path: str, new_name_file:str):
+    def rename_file(self, path: str, new_name_file:str)->Dict:
         # hanya untuk mengubah nama file
         old_file = self._get_secure_path(path)
 
@@ -98,7 +99,7 @@ class FileService:
             "new_name": new_file_path.name
         }
 
-    def create_file(self, path: str, filename: str) -> dict:
+    def create_file(self, path: str, filename: str) -> Dict:
         # hanya untuk membuat file baru
         file = self._get_secure_path(path) / filename
         file.parent.mkdir(parents=True, exist_ok=True)
@@ -110,7 +111,7 @@ class FileService:
             "path": str(file)
         }
 
-    def find_file(self, path: str, filename: str) -> list[str]:
+    def find_file(self, path: str, filename: str) -> List[str]:
         # hanya untuk menemukan file
         folder = self._get_secure_path(path)
 
@@ -124,7 +125,7 @@ class FileService:
             if file.is_file()
         ]
 
-    def create_folder(self, path: str, nameFolder: str) -> dict:
+    def create_folder(self, path: str, nameFolder: str) -> Dict:
         # hanya untuk membuat folder baru
         folder_baru = self._get_secure_path(path) / nameFolder
 
@@ -135,7 +136,7 @@ class FileService:
             "path": str(folder_baru)
         }
 
-    def read_folder(self, path: str) -> list[dict]:
+    def read_folder(self, path: str) -> List[Dict]:
         # hanya untuk melihat isi folder
         folder = self._get_secure_path(path)
 
@@ -151,7 +152,7 @@ class FileService:
             for item in folder.iterdir()
         ]
 
-    def check_size_folder(self, path: str) -> dict:
+    def check_size_folder(self, path: str) -> Dict:
         # hanya untuk cek size folder
         folder = self._get_secure_path(path)
 

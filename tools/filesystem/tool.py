@@ -1,12 +1,12 @@
 from langchain_core.tools import tool
-
+from typing import List,Dict
 from .service import FileService
 
 file_service = FileService()
 
 
 @tool
-def filesystem_read_file(path: str):
+def filesystem_read_file(path: str)->str:
     """
     Reads and returns the text content of a file. 
     Use this tool when you need to view, analyze, or extract information from a specific file.
@@ -18,7 +18,7 @@ def filesystem_read_file(path: str):
 
 
 @tool
-def filesystem_delete_file(path: str):
+def filesystem_delete_file(path: str)->Dict:
     """
     Permanently deletes a file from the system. 
     Use this tool to remove a file. Note: This tool cannot be used to delete folders.
@@ -30,7 +30,7 @@ def filesystem_delete_file(path: str):
 
 
 @tool
-def filesystem_move_file(source: str, destination: str):
+def filesystem_move_file(source: str, destination: str)->Dict:
     """
     Moves a file from a source location to a destination. 
     Automatically creates the destination directory if it does not exist.
@@ -43,7 +43,7 @@ def filesystem_move_file(source: str, destination: str):
 
 
 @tool
-def filesystem_copy_file(source: str, destination: str):
+def filesystem_copy_file(source: str, destination: str)->Dict:
     """
     Copies a file from a source location to a destination. 
     The original file remains intact. Automatically creates the destination directory if it does not exist.
@@ -56,7 +56,7 @@ def filesystem_copy_file(source: str, destination: str):
 
 
 @tool
-def filesystem_rename_file(path: str, filename):
+def filesystem_rename_file(path: str, filename)->Dict:
     """Renames a file. The file remains in its original directory.
 
     Parameters:
@@ -67,7 +67,7 @@ def filesystem_rename_file(path: str, filename):
 
 
 @tool
-def filesystem_create_file(path: str, filename: str):
+def filesystem_create_file(path: str, filename: str)->Dict:
     """ 
     Creates a new empty file. Automatically creates parent directories if they do not exist. 
     Will raise an error if the file already exists at the specified location.
@@ -80,7 +80,7 @@ def filesystem_create_file(path: str, filename: str):
 
 
 @tool
-def filesystem_find_file(path: str, filename: str):
+def filesystem_find_file(path: str, filename: str)->List[str]:
     """
     Recursively searches for files within a directory and all its subdirectories based on a filename or glob pattern.
 
@@ -92,7 +92,7 @@ def filesystem_find_file(path: str, filename: str):
 
 
 @tool
-def filesystem_create_folder(path: str, nameFolder: str):
+def filesystem_create_folder(path: str, nameFolder: str)->Dict:
     """
     Creates a new directory (folder). Will not raise an error if the folder already exists.
     
@@ -104,7 +104,7 @@ def filesystem_create_folder(path: str, nameFolder: str):
 
 
 @tool
-def filesystem_read_folder(path: str):
+def filesystem_read_folder(path: str)->List[Dict]:
     """
     Lists the immediate contents (files and subdirectories) of a specified folder. 
     Does not search recursively into subdirectories.
@@ -116,7 +116,7 @@ def filesystem_read_folder(path: str):
 
 
 @tool
-def filesystem_get_folder_size(path: str):
+def filesystem_get_folder_size(path: str)->Dict:
     """
     Calculates the total size of a folder and all its contents recursively. 
     Returns the total size broken down into bytes, KB, MB, and GB.
