@@ -44,7 +44,7 @@ if not os.getenv("TAVILY_API_KEY"):
 # -----------------------------------------------------------------------------
 
 from tools.web_search.service import WebSearchTool
-from tools.web_search import tool_ws
+from tools.web_search import tool
 
 # -----------------------------------------------------------------------------
 # Helper
@@ -401,12 +401,12 @@ class TestWebSearchTools:
         mock_search_basic = MagicMock(return_value=expected_tool_payload)
 
         monkeypatch.setattr(
-            tool_ws.search_tool,
+            tool.search_tool,
             "search_basic",
             mock_search_basic
         )
 
-        result = call_tool(tool_ws.web_search_basic, "python")
+        result = call_tool(tool.web_search_basic, "python")
 
         mock_search_basic.assert_called_once_with("python")
         assert result == expected_tool_payload
@@ -422,12 +422,12 @@ class TestWebSearchTools:
         mock_search_advanced = MagicMock(return_value=expected_tool_payload)
 
         monkeypatch.setattr(
-            tool_ws.search_tool,
+            tool.search_tool,
             "search_advanced",
             mock_search_advanced
         )
 
-        result = call_tool(tool_ws.web_search_advanced, "python")
+        result = call_tool(tool.web_search_advanced, "python")
 
         mock_search_advanced.assert_called_once_with("python")
         assert result == expected_tool_payload
@@ -443,12 +443,12 @@ class TestWebSearchTools:
         mock_search_fast = MagicMock(return_value=expected_tool_payload)
 
         monkeypatch.setattr(
-            tool_ws.search_tool,
+            tool.search_tool,
             "search_fast",
             mock_search_fast
         )
 
-        result = call_tool(tool_ws.web_search_fast, "python")
+        result = call_tool(tool.web_search_fast, "python")
 
         mock_search_fast.assert_called_once_with("python")
         assert result == expected_tool_payload
@@ -459,9 +459,9 @@ class TestWebSearchTools:
 
         Ini penting karena AI agent biasanya memilih tool berdasarkan deskripsi.
         """
-        basic_desc = get_tool_description(tool_ws.web_search_basic)
-        advanced_desc = get_tool_description(tool_ws.web_search_advanced)
-        fast_desc = get_tool_description(tool_ws.web_search_fast)
+        basic_desc = get_tool_description(tool.web_search_basic)
+        advanced_desc = get_tool_description(tool.web_search_advanced)
+        fast_desc = get_tool_description(tool.web_search_fast)
 
         assert len(basic_desc) > 0
         assert len(advanced_desc) > 0
@@ -471,7 +471,7 @@ class TestWebSearchTools:
         """
         Memastikan deskripsi tool basic cukup informatif untuk agent.
         """
-        description = get_tool_description(tool_ws.web_search_basic).lower()
+        description = get_tool_description(tool.web_search_basic).lower()
 
         assert "simple" in description or "quick" in description
 
@@ -479,7 +479,7 @@ class TestWebSearchTools:
         """
         Memastikan deskripsi tool advanced cukup informatif untuk agent.
         """
-        description = get_tool_description(tool_ws.web_search_advanced).lower()
+        description = get_tool_description(tool.web_search_advanced).lower()
 
         assert "advanced" in description or "in-depth" in description
 
@@ -487,7 +487,7 @@ class TestWebSearchTools:
         """
         Memastikan deskripsi tool fast menyebutkan pencarian cepat.
         """
-        description = get_tool_description(tool_ws.web_search_fast).lower()
+        description = get_tool_description(tool.web_search_fast).lower()
 
         assert "quick" in description or "fast" in description or "rapid" in description
 
@@ -516,7 +516,7 @@ class TestWebSearchIntegration:
         Memanggil API Tavily secara nyata menggunakan web_search_basic.
         """
         result = call_tool(
-            tool_ws.web_search_basic,
+            tool.web_search_basic,
             "Python programming language"
         )
 
@@ -536,7 +536,7 @@ class TestWebSearchIntegration:
         Memanggil API Tavily secara nyata menggunakan web_search_advanced.
         """
         result = call_tool(
-            tool_ws.web_search_advanced,
+            tool.web_search_advanced,
             "Python FastAPI vs Flask comparison"
         )
 
@@ -554,7 +554,7 @@ class TestWebSearchIntegration:
         di service.py.
         """
         result = call_tool(
-            tool_ws.web_search_fast,
+            tool.web_search_fast,
             "Python"
         )
 

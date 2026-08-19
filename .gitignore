@@ -9,6 +9,5 @@ wheels/
 # Virtual environments
 .venv
 .env
-config
 treeThis.sh
-
+old_main.py
