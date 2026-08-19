@@ -9,5 +9,8 @@ wheels/
 # Virtual environments
 .venv
 .env
+
 treeThis.sh
 old_main.py
+
+structure_project.txt
