@@ -4,6 +4,7 @@ from agent import react_agent
 from helper.stream import run_stream
 from memory.working import WorkingMemory
 from memory.episodic import Episodic
+# from MCP.client import Client
 from langchain_core.messages import HumanMessage
 from config.connect_db import *
 
@@ -19,8 +20,12 @@ async def main():
     await store.setup()
     episodic_memory = Episodic(store=store)
     
+    
     # graph
-    agent = react_agent.create_single_agent(checkpointer=working_memory,store=episodic_memory)
+    agent = react_agent.create_single_agent(
+        checkpointer=working_memory,
+        store=episodic_memory        
+        )
 
     # thread id
     THREAD_ID = str(uuid.uuid4())

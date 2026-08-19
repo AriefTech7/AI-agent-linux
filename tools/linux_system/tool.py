@@ -1,9 +1,8 @@
 from .service import LinuxSystem
-from mcp.server.mcpserver import MCPServer
-mcp = MCPServer("mcp-linux-system")
+from langchain_core.tools import tool
 service_linux = LinuxSystem()
 
-@mcp.tool()
+@tool()
 def get_cpu_info():
     """
     Retrieves CPU information 
@@ -13,7 +12,7 @@ def get_cpu_info():
         dict: CPU information in a structured format.
     """
     return service_linux.get_cpu_info()
-@mcp.tool()
+@tool()
 def get_hostname():
     """
     Get the hostname of a Linux computer.
@@ -22,7 +21,7 @@ def get_hostname():
         dict: hostname information in a structured format.
     """
     return service_linux.get_hostname()
-@mcp.tool()
+@tool()
 def get_kernel_info():
     """
     Gets the version and information of the currently running Linux kernel.
@@ -31,7 +30,7 @@ def get_kernel_info():
         dict: kernel information in a structured format.
     """    
     return service_linux.get_kernel_info()
-@mcp.tool()
+@tool()
 def get_os_info():
     """
     Identify 
@@ -42,7 +41,7 @@ def get_os_info():
         dict: OS information in a structured format.
     """
     return service_linux.get_os_info()
-@mcp.tool()
+@tool()
 def get_disk_usage():
     """
     Gets total capacity, usage, and free space of the filesystem.
@@ -51,7 +50,7 @@ def get_disk_usage():
         dict: Disk information in a structured format.
     """
     return service_linux.get_disk_usage()
-@mcp.tool()
+@tool()
 def get_memory_usage():
     """
     Gets the current percentage or state of RAM usage.
@@ -60,7 +59,7 @@ def get_memory_usage():
         dict: Memory information in a structured format.
     """
     return service_linux.get_memory_usage()
-@mcp.tool()
+@tool()
 def get_uptime():
     """
     Gets the length of time the 
@@ -70,7 +69,7 @@ def get_uptime():
         dict: Uptime information in a structured format.
     """
     return service_linux.get_uptime()
-@mcp.tool()
+@tool()
 def get_system_info():
     """
     Retrieves general Linux system information, 

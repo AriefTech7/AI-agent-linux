@@ -3,7 +3,7 @@ from typing import Dict, Any
 
 
 class LinuxSystem():
-    def __int__(self):
+    def __init__(self):
         pass
 
     def get_cpu_info(self) -> Dict[str, Any]:
