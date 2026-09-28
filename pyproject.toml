@@ -16,7 +16,10 @@ dependencies = [
     "mcp<2",
     "ollama>=0.6.2",
     "pytest>=9.1.1",
+    "rich>=15.0.0",
     "shortuuid>=1.0.13",
+    "tavily>=1.1.0",
+    "textual>=8.2.8",
 ]
 
 [tool.pytest.ini_options]

@@ -9,7 +9,6 @@ from llm import chatgpt
 from tools.tool_manager import tools
 from config.connect_db import *
 
-
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
 

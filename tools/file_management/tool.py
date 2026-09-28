@@ -80,18 +80,6 @@ def filesystem_create_file(path: str, filename: str)->Dict:
 
 
 @tool
-def filesystem_find_file(path: str, filename: str)->List[str]:
-    """
-    Recursively searches for files within a directory and all its subdirectories based on a filename or glob pattern.
-
-    Parameters:
-    - path: The root directory path to start the search from.
-    - filename: The exact filename or a glob pattern to search for (e.g., '*.txt', 'report_*.pdf').
-    """
-    return file_service.find_file(path, filename)
-
-
-@tool
 def filesystem_create_folder(path: str, nameFolder: str)->Dict:
     """
     Creates a new directory (folder). Will not raise an error if the folder already exists.

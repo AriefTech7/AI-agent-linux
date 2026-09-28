@@ -2,6 +2,11 @@ from typing import Any, List, Dict
 from langgraph.store.postgres.aio import AsyncPostgresStore
 
 
+"""
+NOTE :
+data yang akan disimpan pada episodic memory adalah data yang akan berguna di masa mendatang,
+seperti kesalahan yang terjadi, perubahan pengambilan keputusan dll
+"""
 
 class Episodic():
     def __init__(self, store: AsyncPostgresStore):
@@ -14,7 +19,7 @@ class Episodic():
         )
         return item
 
-    async def update_episodic(self, namespace: tuple[str], key: str, value: dict[str, Any]) -> None:
+    async def update_episodic(self, namespace: tuple[str,], key: str, value: dict[str, Any]) -> None:
         return await self.store.put(
             namespace=namespace,
             key=key,
